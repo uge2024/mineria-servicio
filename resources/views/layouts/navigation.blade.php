@@ -15,7 +15,18 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    <!-- Enlace a Crear Servicio -->
+                <x-nav-link :href="route('servicios.index')" :active="request()->routeIs('servicios.index')">
+                {{ __('Servicios') }}
+                    </x-nav-link>
+
+                    <!-- Enlace a Crear Servicio -->
+                <x-nav-link :href="route('boletas.index')" :active="request()->routeIs('boletas.index')">
+                    {{ __('Solicitud de Servicio') }}
+                        </x-nav-link>
                 </div>
+
             </div>
 
             <!-- Settings Dropdown -->
