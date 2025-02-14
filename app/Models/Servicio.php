@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Boleta;
+use App\Models\OrdenTrabajo;
 
 class Servicio extends Model
 {
@@ -14,5 +15,10 @@ class Servicio extends Model
     public function boletas()
     {
         return $this->hasMany(Boleta::class);
+    }
+
+    public function ordenTrabajo()
+    {
+        return $this->hasMany(OrdenTrabajo::class);
     }
 }

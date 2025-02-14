@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\BoletaController;
+use App\Http\Controllers\OrdenTrabajoController;
 
 Route::resource('servicios', ServicioController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
@@ -17,6 +18,13 @@ Route::delete('/boletas/{boleta}', [BoletaController::class, 'destroy'])->name('
 
 Route::get('/boletas/{boleta}/pdf', [BoletaController::class, 'generatePdf'])->name('boletas.pdf');
 
+Route::get('/orden-trabajo/create', [OrdenTrabajoController::class, 'create'])->name('orden_trabajo.create');
+Route::post('/orden-trabajo', [OrdenTrabajoController::class, 'store'])->name('orden_trabajo.store');
+Route::get('/orden-trabajo', [OrdenTrabajoController::class, 'index'])->name('orden_trabajo.index');
+
+
+Route::get('/orden-trabajo/{id}/pdf', [OrdenTrabajoController::class, 'generarPDF'])->name('orden_trabajo.pdf');
+ 
 Route::get('/', function () {
     return view('welcome');
 });

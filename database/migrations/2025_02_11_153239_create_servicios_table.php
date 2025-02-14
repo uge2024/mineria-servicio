@@ -24,6 +24,13 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('servicios');
+        // Desactivar restricciones de clave foránea
+    //Schema::disableForeignKeyConstraints();
+
+    // Eliminar la tabla
+    Schema::dropIfExists('boletas');
+
+    // Reactivar restricciones de clave foránea
+    //Schema::enableForeignKeyConstraints();
     }
 };

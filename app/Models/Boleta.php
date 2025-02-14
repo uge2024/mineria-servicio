@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Servicio;
 use App\Models\Muestra;
+use App\Models\OrdenTrabajo;
 
 
 class Boleta extends Model
@@ -34,5 +35,10 @@ class Boleta extends Model
     public function muestras()
     {
         return $this->hasMany(Muestra::class);
+    }
+
+    public function ordenTrabajo()
+    {
+        return $this->hasOne(OrdenTrabajo::class);
     }
 }
