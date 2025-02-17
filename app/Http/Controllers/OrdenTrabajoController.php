@@ -12,7 +12,7 @@ class OrdenTrabajoController extends Controller
     
     public function index()
     {
-        $ordenesTrabajo = OrdenTrabajo::with(['boleta', 'servicio'])->get();
+        $ordenesTrabajo = OrdenTrabajo::with(['boleta', 'servicio'])->orderBy('created_at', 'desc')->paginate(10);
         return view('orden_trabajo.index', compact('ordenesTrabajo'));
     }
     
@@ -62,8 +62,23 @@ class OrdenTrabajoController extends Controller
         // Cargar la vista del PDF con los datos
         $pdf = Pdf::loadView('orden_trabajo.pdf', compact('ordenTrabajo'));
     
-        // Descargar el PDF con un nombre personalizado
-        return $pdf->download('orden_trabajo_' . $ordenTrabajo->id . '.pdf');
+        // Mostrar el PDF en una nueva pestaña
+    return $pdf->stream('orden_trabajo_' . $ordenTrabajo->id . '.pdf');
     }
+
+
+    public function cambiarEstado($id)
+    {
+        // Buscar la orden de trabajo por ID
+        $ordenTrabajo = OrdenTrabajo::findOrFail($id);
+
+        // Cambiar el estado de pago a "pagado"
+        $ordenTrabajo->estado_pago = 'pagado';
+        $ordenTrabajo->save();
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('orden_trabajo.index')->with('success', 'Estado de pago actualizado correctamente.');
+    }
+    
 
 }

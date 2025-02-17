@@ -1,4 +1,3 @@
-<!-- resources/views/orden_trabajo/index.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -13,12 +12,13 @@
             </a>
         </div>
 
-        <!-- Tabla de Órdenes de Trabajo -->
-        @if ($ordenesTrabajo->isEmpty())
+        <!-- Verificar si hay órdenes de trabajo -->
+        @if ($ordenesTrabajo->count() === 0)
             <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
                 <p class="text-yellow-800">No hay órdenes de trabajo disponibles.</p>
             </div>
         @else
+            <!-- Tabla de Órdenes de Trabajo -->
             <div class="overflow-x-auto">
                 <table class="min-w-full bg-white border border-gray-200 divide-y divide-gray-200">
                     <thead class="bg-gray-50">
@@ -66,20 +66,54 @@
                                         {{ ucfirst($orden->estado_pago) }}
                                     </span>
                                 </td>
-                                
-                                    <!-- Dentro de la tabla, en la columna de acciones -->
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        <a href="{{ route('orden_trabajo.pdf', $orden->id) }}" 
-                                        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-3 rounded-lg shadow-md transition duration-300 ease-in-out">
-                                            Imprimir
-                                        </a>
-                                    </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <a href="{{ route('orden_trabajo.pdf', $orden->id) }}" 
+                                       target="_blank"
+                                       class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-3 rounded-lg shadow-md transition duration-300 ease-in-out">
+                                        Imprimir
+                                    </a>
+                                    @if ($orden->estado_pago === 'pendiente')
+                                        <form action="{{ route('orden_trabajo.cambiarEstado', $orden->id) }}" method="POST" class="inline-block ml-2" 
+                                            onsubmit="return confirmarCambioEstado(event)">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" 
+                                                    class="bg-green-500 hover:bg-green-600 text-white font-semibold py-1 px-3 rounded-lg shadow-md transition duration-300 ease-in-out">
+                                                Marcar como Pagado
+                                            </button>
+                                        </form>
+                                    @endif
+                                    <script>
+                                        function confirmarCambioEstado(event) {
+                                            event.preventDefault(); // Evitar que el formulario se envíe automáticamente
+                                            Swal.fire({
+                                                title: '¿Estás seguro?',
+                                                text: "¿Deseas marcar esta orden como pagada?",
+                                                icon: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonColor: '#3085d6',
+                                                cancelButtonColor: '#d33',
+                                                confirmButtonText: 'Sí, marcar como pagada',
+                                                cancelButtonText: 'Cancelar'
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    event.target.submit(); // Enviar el formulario si el usuario confirma
+                                                }
+                                            });
+                                        }
+                                    </script>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
         @endif
+
+        <!-- Enlaces de Paginación -->
+        <div class="mt-6">
+            {{ $ordenesTrabajo->links('pagination::tailwind') }}
+        </div>
     </div>
 </div>
 @endsection

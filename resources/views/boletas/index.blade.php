@@ -3,16 +3,22 @@
 @section('content')
 <div class="max-w-6xl mx-auto p-6">
     <h1 class="text-3xl font-bold mb-6 text-center text-gray-700">Listado de Solicitudes de Servicio</h1>
+
     <!-- Botón Agregar Boleta -->
     <div class="flex justify-end mb-4">
         <a href="{{ route('boletas.create') }}" 
            class="bg-blue-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-700 transition">
-            + Agregar Boleta
+            + Agregar Solicitud
         </a>
     </div>
 
-    @forelse ($boletas->chunk(2) as $chunk)
-        @foreach ($chunk as $index => $boleta)
+    <!-- Verificar si hay boletas -->
+    @if ($boletas->isEmpty())
+        <div class="text-center text-gray-500">
+            No hay boletas generadas.
+        </div>
+    @else
+        @foreach ($boletas as $index => $boleta)
             <!-- Contenedor de Boleta Completa -->
             <div class="rounded-lg border-2 {{ $index % 2 === 0 ? 'border-blue-400' : 'border-green-400' }} p-4 mb-6">
                 <!-- Número de Solicitud -->
@@ -67,7 +73,7 @@
                     <a href="{{ route('boletas.pdf', $boleta->id) }}" 
                         target="_blank" 
                         class="text-green-600 hover:text-green-800 font-medium">
-                        Ver PDF
+                        Imprimir
                      </a>
                 </div>
 
@@ -103,10 +109,11 @@
                 @endif
             </div>
         @endforeach
-    @empty
-        <div class="text-center text-gray-500">
-            No hay boletas generadas.
-        </div>
-    @endforelse
+    @endif
+
+    <!-- Enlaces de Paginación -->
+    <div class="mt-6">
+        {{ $boletas->links('pagination::tailwind') }}
+    </div>
 </div>
 @endsection

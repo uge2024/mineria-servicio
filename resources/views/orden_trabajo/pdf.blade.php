@@ -1,4 +1,3 @@
-<!-- resources/views/orden_trabajo/pdf.blade.php -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,64 +8,177 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 10px; /* Reducir el padding */
+            font-size: 12px; /* Reducir el tamaño de la fuente */
+        }
+        .header {
+            position: relative;
+            width: 100%;
+            margin-bottom: 10px; /* Reducir el margen inferior */
+            text-align: center;
+        }
+        .header img {
+            height: 60px; /* Reducir el tamaño de los logos */
+        }
+        .logo-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .logo-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .institution-name {
+            font-size: 14px; /* Reducir el tamaño de la fuente */
+            font-weight: bold;
+            margin-bottom: 5px; /* Reducir el margen inferior */
         }
         h1 {
             text-align: center;
             color: #333;
+            margin-top: 10px; /* Reducir el margen superior */
+            font-size: 16px; /* Reducir el tamaño de la fuente */
         }
-        .info {
-            margin-bottom: 20px;
-        }
-        .info p {
-            margin: 5px 0;
-        }
-        table {
-            width: 100%;
+        .info-table {
+            width: 80%; /* Reducir el ancho de la tabla */
+            margin: 0 auto; /* Centrar la tabla */
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-bottom: 10px; /* Reducir el margen inferior */
         }
-        table, th, td {
+        .info-table, .info-table th, .info-table td {
             border: 1px solid #333;
         }
-        th, td {
-            padding: 10px;
+        .info-table th, .info-table td {
+            padding: 5px; /* Reducir el padding */
             text-align: left;
+            font-size: 10px; /* Reducir el tamaño de la fuente */
         }
-        th {
+        .info-table th {
             background-color: #f2f2f2;
+        }
+        .samples-table {
+            width: 80%; /* Reducir el ancho de la tabla */
+            margin: 0 auto; /* Centrar la tabla */
+            border-collapse: collapse;
+            margin-top: 10px; /* Reducir el margen superior */
+        }
+        .samples-table, .samples-table th, .samples-table td {
+            border: 1px solid #333;
+        }
+        .samples-table th, .samples-table td {
+            padding: 5px; /* Reducir el padding */
+            text-align: left;
+            font-size: 10px; /* Reducir el tamaño de la fuente */
+        }
+        .samples-table th {
+            background-color: #f2f2f2;
+        }
+        .section1 {
+            text-align: center;
+            font-size: 8px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
+    <!-- Encabezado con logos -->
+    <div class="header">
+        <div class="logo-left">
+            <img src="" alt="Logo Izquierdo">
+        </div>
+        <div class="logo-right">
+            <img src="" alt="Logo Derecho">
+        </div>
+        <div class="institution-name">
+            Gobierno Autónomo Departamental de Cochabamba
+        </div>
+    </div>
+
+    <!-- Título principal -->
     <h1>Orden de Trabajo #{{ $ordenTrabajo->id }}</h1>
 
-    <!-- Información de la boleta -->
-    <div class="info">
-        <p><strong>Boleta:</strong> {{ $ordenTrabajo->boleta->numero_solicitud }}</p>
-        <p><strong>Solicitante:</strong> {{ $ordenTrabajo->boleta->nombre_solicitante }}</p>
-        <p><strong>CI:</strong> {{ $ordenTrabajo->boleta->ci }}</p>
-        <p><strong>Sector:</strong> {{ $ordenTrabajo->boleta->sector }}</p>
-        <p><strong>Fecha de Solicitud:</strong> {{ $ordenTrabajo->boleta->fecha_solicitud }}</p>
-        <p><strong>Número de Contrato:</strong> {{ $ordenTrabajo->boleta->numero_contrato }}</p>
-    </div>
+    <!-- Información de la boleta en tabla -->
+    <table class="info-table">
+        <thead>
+            <tr>
+                <th colspan="2">Datos de la Solicitud</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Boleta:</strong></td>
+                <td>{{ $ordenTrabajo->boleta->numero_solicitud }}</td>
+            </tr>
+            <tr>
+                <td><strong>Solicitante:</strong></td>
+                <td>{{ $ordenTrabajo->boleta->nombre_solicitante }}</td>
+            </tr>
+            <tr>
+                <td><strong>CI:</strong></td>
+                <td>{{ $ordenTrabajo->boleta->ci }}</td>
+            </tr>
+            <tr>
+                <td><strong>Sector:</strong></td>
+                <td>{{ $ordenTrabajo->boleta->sector }}</td>
+            </tr>
+            <tr>
+                <td><strong>Fecha de Solicitud:</strong></td>
+                <td>{{ $ordenTrabajo->boleta->fecha_solicitud }}</td>
+            </tr>
+            <tr>
+                <td><strong>Número de Contrato:</strong></td>
+                <td>{{ $ordenTrabajo->boleta->numero_contrato }}</td>
+            </tr>
+        </tbody>
+    </table>
 
-    <!-- Información del servicio -->
-    <div class="info">
-        <p><strong>Servicio:</strong> {{ $ordenTrabajo->servicio->nombre }}</p>
-        <p><strong>Precio Unitario:</strong> ${{ number_format($ordenTrabajo->servicio->precio, 2) }}</p>
-    </div>
+    <!-- Información del servicio en tabla -->
+    <table class="info-table">
+        <thead>
+            <tr>
+                <th colspan="2">Información del Servicio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Servicio:</strong></td>
+                <td>{{ $ordenTrabajo->servicio->nombre }}</td>
+            </tr>
+            <tr>
+                <td><strong>Precio Unitario:</strong></td>
+                <td>{{ number_format($ordenTrabajo->servicio->precio, 2) }} Bolivianos</td>
+            </tr>
+        </tbody>
+    </table>
 
-    <!-- Detalles de la orden de trabajo -->
-    <div class="info">
-        <p><strong>Cantidad de Muestras:</strong> {{ $ordenTrabajo->cantidad_muestras }}</p>
-        <p><strong>Costo Total:</strong> ${{ number_format($ordenTrabajo->costo_total, 2) }}</p>
-        <p><strong>Estado de Pago:</strong> {{ ucfirst($ordenTrabajo->estado_pago) }}</p>
-    </div>
+    <!-- Detalles de la orden de trabajo en tabla -->
+    <table class="info-table">
+        <thead>
+            <tr>
+                <th colspan="2">Detalles de la Orden de Trabajo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Cantidad de Muestras:</strong></td>
+                <td>{{ $ordenTrabajo->cantidad_muestras }}</td>
+            </tr>
+            <tr>
+                <td><strong>Costo Total:</strong></td>
+                <td>{{ number_format($ordenTrabajo->costo_total, 2) }} Bolivianos</td>
+            </tr>
+            <tr>
+                <td><strong>Estado de Pago:</strong></td>
+                <td>{{ ucfirst($ordenTrabajo->estado_pago) }}</td>
+            </tr>
+        </tbody>
+    </table>
 
     <!-- Tabla de muestras -->
-    <h2>Muestras</h2>
-    <table>
+    <h1>Muestras</h1>
+    <table class="samples-table">
         <thead>
             <tr>
                 <th>Características</th>
@@ -88,5 +200,11 @@
             @endforeach
         </tbody>
     </table>
+    <div class="section1">
+        
+        <p>.....................................................................................................................................</p>
+        <h3>INSTRUCTIVO DE TRABAJO</h3>
+
+    </div>
 </body>
 </html>

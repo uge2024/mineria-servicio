@@ -21,6 +21,8 @@ Route::get('/boletas/{boleta}/pdf', [BoletaController::class, 'generatePdf'])->n
 Route::get('/orden-trabajo/create', [OrdenTrabajoController::class, 'create'])->name('orden_trabajo.create');
 Route::post('/orden-trabajo', [OrdenTrabajoController::class, 'store'])->name('orden_trabajo.store');
 Route::get('/orden-trabajo', [OrdenTrabajoController::class, 'index'])->name('orden_trabajo.index');
+Route::put('/orden_trabajo/{id}/cambiar-estado', [OrdenTrabajoController::class, 'cambiarEstado'])
+    ->name('orden_trabajo.cambiarEstado');
 
 
 Route::get('/orden-trabajo/{id}/pdf', [OrdenTrabajoController::class, 'generarPDF'])->name('orden_trabajo.pdf');

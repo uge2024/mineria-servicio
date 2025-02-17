@@ -3,75 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boleta {{ $boleta->numero_solicitud }}</title>
+    <title>Solicitud {{ $boleta->numero_solicitud }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            font-size: 9px;
             margin: 20px;
         }
-        h1 {
+        h1, h2 {
             text-align: center;
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: 12px;
+        }
+        .header, .section {
+            width: 100%;
+            border: 2px solid #000;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .header img {
+            width: 100px;
+            float: left;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
         }
-        table th, table td {
-            border: 1px solid #ddd;
-            padding: 8px;
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 4px;
             text-align: left;
         }
-        table th {
-            background-color: #f4f4f4;
-        }
-        .footer {
+        .section1 {
             text-align: center;
+            font-size: 8px;
             margin-top: 20px;
-            font-size: 12px;
-            color: #666;
         }
     </style>
 </head>
 <body>
-    <h1>Boleta de Solicitud</h1>
+    <div class="header">
+        <img src="" alt="Logo">
+        <h1>GOBIERNO AUTÓNOMO DEPARTAMENTAL DE COCHABAMBA</h1>
+        <h2>FORMULARIO DE:{{ $boleta->servicio->nombre }}</h2>
+    </div>
 
-    <p><strong>Número de Solicitud:</strong> {{ $boleta->numero_solicitud }}</p>
-    <p><strong>Servicio:</strong> {{ $boleta->servicio->nombre }}</p>
-    <p><strong>Solicitante:</strong> {{ $boleta->nombre_solicitante }}</p>
-    <p><strong>C.I.:</strong> {{ $boleta->ci }}</p>
-    <p><strong>Sector:</strong> {{ $boleta->sector }}</p>
-    <p><strong>Fecha de Solicitud:</strong> {{ $boleta->fecha_solicitud }}</p>
-    <p><strong>Número de Contrato:</strong> {{ $boleta->numero_contrato }}</p>
-
-    <h2>Detalles de las Muestras</h2>
-    <table>
-        <thead>
+    <div class="section">
+        <h3>DATOS DEL SOLICITANTE</h3>
+        <table>
             <tr>
-                <th>Características</th>
-                <th>Peso (kg)</th>
-                <th>Municipio</th>
-                <th>Lugar Específico</th>
-                <th>Tipo de Material</th>
+                <td><strong>Nombre del Solicitante:</strong> {{ $boleta->nombre_solicitante }}</td>
+                <td><strong>C.I.:</strong> {{ $boleta->ci }}</td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach ($boleta->muestras as $muestra)
+            <tr>
+                <td><strong>Sector al que Pertenece:</strong> {{ $boleta->sector }}</td>
+                <td><strong>N° de Contacto:</strong> {{ $boleta->numero_contrato }}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><strong>Fecha de Solicitud:</strong> {{ $boleta->fecha_solicitud }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h3>DATOS SOBRE LAS MUESTRAS</h3>
+        <table>
+            <thead>
                 <tr>
+                    <th>N.º</th>
+                    <th>Características de la Muestra</th>
+                    <th>Peso</th>
+                    <th>Municipio</th>
+                    <th>Lugar Específico</th>
+                    <th>Tipo de Material</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($boleta->muestras as $index => $muestra)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
                     <td>{{ $muestra->caracteristicas_muestra ?? 'N/A' }}</td>
                     <td>{{ $muestra->peso }}</td>
                     <td>{{ $muestra->municipio }}</td>
                     <td>{{ $muestra->lugar_especifico }}</td>
                     <td>{{ $muestra->tipo_material }}</td>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-    <div class="footer">
-        Generado el {{ now()->format('d/m/Y H:i') }}
+                @endforeach
+            </tbody>
+        </table>
     </div>
+
+    <div class="section">
+        <p>El tiempo para la entrega de resultados del análisis de muestra FRX es según la cantidad de muestras.</p>
+        <p>En caso de no recoger las muestras durante 2 meses, este puede ser dispuesto por el Gobierno Autónomo Departamental de Cochabamba.</p>
+        <p>Declaro mi conformidad para que más adelante de acuerdo a creación de normativa este servicio tenga un costo como ingreso no tributario.</p>
+    </div>
+
+    <div class="section">
+        <h3>OBSERVACIONES</h3>
+        <p>.....................................................................................................................................</p>
+    </div>
+
+    <div class="section1">
+        
+        <p>.....................................................................................................................................</p>
+        <h3>FIRMA</h3>
+        <p>Nombre del Solitante: {{ $boleta->nombre_solicitante }}</p>
+    </div>
+
+    
 </body>
 </html>

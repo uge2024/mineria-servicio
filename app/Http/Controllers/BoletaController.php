@@ -17,7 +17,7 @@ class BoletaController extends Controller
     {
         $boletas = Boleta::with('servicio')
                       ->orderBy('created_at', 'desc')
-                      ->get();
+                      ->paginate(2);
 
     return view('boletas.index', compact('boletas'));
         
@@ -205,8 +205,8 @@ class BoletaController extends Controller
      */
     public function generatePdf(Boleta $boleta)
     {
-        // Cargar la boleta con sus muestras asociadas
-        $boleta->load('muestras');
+        // Cargar la boleta con sus muestras asociadas y el servicio asociado
+        $boleta->load('muestras', 'servicio');
 
         // Generar el PDF
         $pdf = Pdf::loadView('boletas.pdf', compact('boleta'));
