@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <div class="max-w-3xl mx-auto p-6">
-    <h1 class="text-2xl font-semibold mb-6 text-center">Generar Boleta</h1>
+    <h1 class="text-2xl font-semibold mb-6 text-center">Generar Solicitud</h1>
 
     <form action="{{ route('boletas.store') }}" method="POST" class="space-y-6" id="multiStepForm">
         @csrf
@@ -42,7 +42,7 @@
             </div>
             <!-- Sector -->
             <div>
-                <label for="sector" class="block text-sm font-medium text-gray-700">Sector al que Pertenece:</label>
+                <label for="sector" class="block text-sm font-medium text-gray-700">Razon Social al Sector que Pertenece:</label>
                 <input type="text" name="sector" id="sector" required value="{{ old('sector') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                 @error('sector')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -65,7 +65,7 @@
             </div>
             <!-- Número de Contrato -->
             <div>
-                <label for="numero_contrato" class="block text-sm font-medium text-gray-700">Número de Contrato:</label>
+                <label for="numero_contrato" class="block text-sm font-medium text-gray-700">Número de Contacto:</label>
                 <input type="text" name="numero_contrato" id="numero_contrato" required value="{{ old('numero_contrato') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                 @error('numero_contrato')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -123,7 +123,7 @@
 
             <!-- Botón para agregar nueva muestra -->
             <button type="button" id="add-muestra" class="py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:ring-2 focus:ring-green-500 mb-4">
-                Agregar Muestra
+                Agregar Mas Muestras
             </button>
 
             <!-- Botones de Navegación -->
@@ -132,7 +132,7 @@
                     Anterior
                 </button>
                 <button type="submit" class="py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500">
-                    Generar Boleta
+                    Generar Solicitud
                 </button>
             </div>
         </div>

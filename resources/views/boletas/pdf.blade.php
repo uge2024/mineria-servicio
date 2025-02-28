@@ -46,6 +46,7 @@
     <div class="header">
         <img src="" alt="Logo">
         <h1>GOBIERNO AUTÓNOMO DEPARTAMENTAL DE COCHABAMBA</h1>
+        <h2>Secretaria Departamental de Minería, Hidrocarburos y Energías</h2>
         <h2>FORMULARIO DE:{{ $boleta->servicio->nombre }}</h2>
     </div>
 
@@ -57,7 +58,7 @@
                 <td><strong>C.I.:</strong> {{ $boleta->ci }}</td>
             </tr>
             <tr>
-                <td><strong>Sector al que Pertenece:</strong> {{ $boleta->sector }}</td>
+                <td><strong>Razon Social al Sector que Pertenece:</strong> {{ $boleta->sector }}</td>
                 <td><strong>N° de Contacto:</strong> {{ $boleta->numero_contrato }}</td>
             </tr>
             <tr>
@@ -96,13 +97,12 @@
 
     <div class="section">
         <p>El tiempo para la entrega de resultados del análisis de muestra FRX es según la cantidad de muestras.</p>
-        <p>En caso de no recoger las muestras durante 2 meses, este puede ser dispuesto por el Gobierno Autónomo Departamental de Cochabamba.</p>
-        <p>Declaro mi conformidad para que más adelante de acuerdo a creación de normativa este servicio tenga un costo como ingreso no tributario.</p>
+        <p>En caso de no recoger las muestras durante 2 meses, este sera desechado por el Gobierno Autónomo Departamental de Cochabamba.</p>
     </div>
 
     <div class="section">
         <h3>OBSERVACIONES</h3>
-        <p>.....................................................................................................................................</p>
+        <p>........................................................................................................................................................................................................................................................</p>
     </div>
 
     <div class="section1">

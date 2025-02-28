@@ -34,7 +34,7 @@
             </div>
             <!-- Sector -->
             <div>
-                <label for="sector" class="block text-sm font-medium text-gray-700">Sector al que Pertenece:</label>
+                <label for="sector" class="block text-sm font-medium text-gray-700">Razon Social al Sector que Pertenece:</label>
                 <input type="text" name="sector" id="sector" required value="{{ old('sector', $boleta->sector) }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
             </div>
             <!-- Fecha de Solicitud -->
@@ -51,7 +51,7 @@
             </div>
             <!-- Número de Contrato -->
             <div>
-                <label for="numero_contrato" class="block text-sm font-medium text-gray-700">Número de Contrato:</label>
+                <label for="numero_contrato" class="block text-sm font-medium text-gray-700">Número de Contacto:</label>
                 <input type="text" name="numero_contrato" id="numero_contrato" required value="{{ old('numero_contrato', $boleta->numero_contrato) }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
             </div>
         </div>

@@ -92,7 +92,9 @@
             <img src="" alt="Logo Derecho">
         </div>
         <div class="institution-name">
-            Gobierno Autónomo Departamental de Cochabamba
+            <h2>Gobierno Autónomo Departamental de Cochabamba</h2>
+            <h1>Secretaria Departamental de Minería, Hidrocarburos y Energías</h1>
+            
         </div>
     </div>
 
@@ -128,7 +130,7 @@
                 <td>{{ $ordenTrabajo->boleta->fecha_solicitud }}</td>
             </tr>
             <tr>
-                <td><strong>Número de Contrato:</strong></td>
+                <td><strong>Número de Contacto:</strong></td>
                 <td>{{ $ordenTrabajo->boleta->numero_contrato }}</td>
             </tr>
         </tbody>
