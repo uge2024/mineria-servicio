@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('muestras', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('boleta_id'); // Relación con la tabla boletas
+            $table->string('codigo')->unique();
             $table->text('caracteristicas_muestra')->nullable(); // Características de la muestra (opcional)
-            $table->decimal('peso', 10, 2); // Peso de la muestra (hasta 99999999.99 kg)
             $table->string('municipio', 255); // Municipio
             $table->string('lugar_especifico', 255); // Lugar específico
             $table->enum('tipo_material', ['Brosa', 'Fina']); // Tipo de material (Brosa o Fina)

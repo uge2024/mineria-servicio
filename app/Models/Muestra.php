@@ -9,7 +9,7 @@ use App\Models\Boleta;
 class Muestra extends Model
 {
     protected $fillable = [
-        'boleta_id', 'caracteristicas_muestra', 'peso', 'municipio', 'lugar_especifico', 'tipo_material'
+        'boleta_id', 'codigo', 'caracteristicas_muestra', 'municipio', 'lugar_especifico', 'tipo_material'
     ];
 
     public function boleta()

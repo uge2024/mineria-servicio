@@ -47,8 +47,8 @@ class BoletaController extends Controller
         'fecha_solicitud' => 'required|date',
         'numero_contrato' => 'required|string|max:255',
         'muestras' => 'required|array|min:1',
+        //'muestras.*.codigo' => 'required|string|max:255',
         'muestras.*.caracteristicas_muestra' => 'nullable|string',
-        'muestras.*.peso' => 'required|numeric|min:0',
         'muestras.*.municipio' => 'required|string|max:255',
         'muestras.*.lugar_especifico' => 'required|string|max:255',
         'muestras.*.tipo_material' => 'required|string|in:Brosa,Fina',
@@ -93,19 +93,31 @@ class BoletaController extends Controller
         'numero_solicitud' => $numeroSolicitud, // Asignar el número de solicitud
     ]);
 
-    // Crear las muestras asociadas
-    foreach ($validated['muestras'] as $muestraData) {
-        $boleta->muestras()->create([
-            'caracteristicas_muestra' => $muestraData['caracteristicas_muestra'],
-            'peso' => $muestraData['peso'],
-            'municipio' => $muestraData['municipio'],
-            'lugar_especifico' => $muestraData['lugar_especifico'],
-            'tipo_material' => $muestraData['tipo_material'],
-        ]);
-    }
+    // Obtener el último número de muestra para el año dado
+        $lastMuestra = Muestra::whereHas('boleta', function ($query) use ($gestion) {
+            $query->whereYear('fecha_solicitud', $gestion);
+        })->orderBy('id', 'desc')->first();
+
+        $ultimoNumeroMuestra = $lastMuestra && preg_match('/-(\d{3})-\d{4}$/', $lastMuestra->codigo, $matches)
+            ? intval($matches[1])
+            : 0;
+
+// Crear las muestras asociadas con códigos secuenciales globales
+        foreach ($validated['muestras'] as $index => $muestraData) {
+            $numeroMuestra = $ultimoNumeroMuestra + 1 + $index; // Incrementar desde el último número global
+            $codigoMuestra = "COD-" . str_pad($numeroMuestra, 3, '0', STR_PAD_LEFT) . "-{$gestion}";
+            
+            $boleta->muestras()->create([
+                'caracteristicas_muestra' => $muestraData['caracteristicas_muestra'],
+                'codigo' => $codigoMuestra,
+                'municipio' => $muestraData['municipio'],
+                'lugar_especifico' => $muestraData['lugar_especifico'],
+                'tipo_material' => $muestraData['tipo_material'],
+            ]);
+        }
 
     // Redirigir con mensaje de éxito
-    return redirect()->route('boletas.index')->with('success', 'Boleta generada exitosamente.');
+    return redirect()->route('boletas.index')->with('success', 'Solicitud generada exitosamente.');
 }
 
     /**
@@ -129,8 +141,8 @@ class BoletaController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Boleta $boleta)
-    {
-        // Validar los datos generales de la boleta
+{
+    // Validar los datos generales de la boleta
     $validated = $request->validate([
         'servicio_id' => 'required|exists:servicios,id',
         'nombre_solicitante' => 'required|string|max:255',
@@ -141,13 +153,12 @@ class BoletaController extends Controller
         'muestras' => 'required|array|min:1',
         'muestras.*.id' => 'nullable|exists:muestras,id',
         'muestras.*.caracteristicas_muestra' => 'nullable|string',
-        'muestras.*.peso' => 'required|numeric|min:0',
         'muestras.*.municipio' => 'required|string|max:255',
         'muestras.*.lugar_especifico' => 'required|string|max:255',
         'muestras.*.tipo_material' => 'required|string|in:Brosa,Fina',
     ]);
 
-    // Actualizar los datos generales de la boleta
+    // Actualizar los datos generales de la boleta (sin tocar numero_solicitud)
     $boleta->update([
         'servicio_id' => $validated['servicio_id'],
         'nombre_solicitante' => $validated['nombre_solicitante'],
@@ -157,32 +168,52 @@ class BoletaController extends Controller
         'numero_contrato' => $validated['numero_contrato'],
     ]);
 
+    // Extraer el año de la fecha de solicitud (gestión) para las nuevas muestras
+    $gestion = \Carbon\Carbon::parse($validated['fecha_solicitud'])->format('Y');
+
+    // Obtener el último número de muestra para el año dado
+    $lastMuestra = Muestra::whereHas('boleta', function ($query) use ($gestion) {
+        $query->whereYear('fecha_solicitud', $gestion);
+    })->orderBy('id', 'desc')->first();
+
+    $ultimoNumeroMuestra = $lastMuestra && preg_match('/-(\d{3})-\d{4}$/', $lastMuestra->codigo, $matches)
+        ? intval($matches[1])
+        : 0;
+
+    // Contador para nuevas muestras
+    $nuevoMuestraIndex = 0;
+
     // Actualizar o crear las muestras asociadas
     foreach ($validated['muestras'] as $muestraData) {
         if (isset($muestraData['id'])) {
-            // Si existe un ID, actualizar la muestra existente
+            // Si existe un ID, actualizar la muestra existente sin tocar el código
             Muestra::where('id', $muestraData['id'])->update([
                 'caracteristicas_muestra' => $muestraData['caracteristicas_muestra'],
-                'peso' => $muestraData['peso'],
                 'municipio' => $muestraData['municipio'],
                 'lugar_especifico' => $muestraData['lugar_especifico'],
                 'tipo_material' => $muestraData['tipo_material'],
             ]);
         } else {
-            // Si no existe un ID, crear una nueva muestra
+            // Si no existe un ID, crear una nueva muestra con un código único
+            $numeroMuestra = $ultimoNumeroMuestra + 1 + $nuevoMuestraIndex;
+            $codigoMuestra = "COD-" . str_pad($numeroMuestra, 3, '0', STR_PAD_LEFT) . "-{$gestion}";
+
             $boleta->muestras()->create([
                 'caracteristicas_muestra' => $muestraData['caracteristicas_muestra'],
-                'peso' => $muestraData['peso'],
+                'codigo' => $codigoMuestra,
                 'municipio' => $muestraData['municipio'],
                 'lugar_especifico' => $muestraData['lugar_especifico'],
                 'tipo_material' => $muestraData['tipo_material'],
             ]);
+
+            $nuevoMuestraIndex++;
         }
     }
 
     // Eliminar muestras marcadas para eliminación
     if ($request->has('muestras_eliminar')) {
-        Muestra::whereIn('id', $request->input('muestras_eliminar'))->delete();
+        $muestrasEliminar = $request->input('muestras_eliminar', []);
+        Muestra::whereIn('id', $muestrasEliminar)->where('boleta_id', $boleta->id)->delete();
     }
 
     // Redirigir con mensaje de éxito

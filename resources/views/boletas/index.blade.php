@@ -5,22 +5,25 @@
     <h1 class="text-3xl font-bold mb-6 text-center text-gray-700">Listado de Solicitudes de Servicio</h1>
 
     <!-- Botón Agregar Boleta -->
-    <div class="flex justify-end mb-4">
+    <div class="flex justify-end mb-6">
         <a href="{{ route('boletas.create') }}" 
-           class="bg-blue-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-700 transition">
-            + Agregar Solicitud
+           class="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Agregar Solicitud
         </a>
     </div>
 
     <!-- Verificar si hay boletas -->
     @if ($boletas->isEmpty())
-        <div class="text-center text-gray-500">
+        <div class="text-center text-gray-500 py-8">
             No hay boletas generadas.
         </div>
     @else
         @foreach ($boletas as $index => $boleta)
             <!-- Contenedor de Boleta Completa -->
-            <div class="rounded-lg border-2 {{ $index % 2 === 0 ? 'border-blue-400' : 'border-green-400' }} p-4 mb-6">
+            <div class="rounded-lg border-2 {{ $index % 2 === 0 ? 'border-blue-400' : 'border-green-400' }} p-4 mb-6 bg-white shadow-sm">
                 <!-- Número de Solicitud -->
                 <div class="mb-4">
                     <p class="font-semibold text-gray-700">Número de Solicitud:</p>
@@ -56,9 +59,12 @@
                 </div>
 
                 <!-- Acciones -->
-                <div class="flex space-x-2 mb-4">
+                <div class="flex flex-wrap gap-3 mb-4">
                     <a href="{{ route('boletas.edit', $boleta->id) }}" 
-                       class="text-blue-600 hover:text-blue-800 font-medium">
+                       class="inline-flex items-center bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 transition ease-in-out duration-150">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
                         Editar
                     </a>
                     <form action="{{ route('boletas.destroy', $boleta->id) }}" method="POST" 
@@ -66,15 +72,22 @@
                           onsubmit="return confirm('¿Está seguro de eliminar esta boleta?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="text-red-600 hover:text-red-800 font-medium">
+                        <button type="submit" 
+                                class="inline-flex items-center bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4M9 7h6"></path>
+                            </svg>
                             Eliminar
                         </button>
                     </form>
                     <a href="{{ route('boletas.pdf', $boleta->id) }}" 
-                        target="_blank" 
-                        class="text-green-600 hover:text-green-800 font-medium">
+                       target="_blank" 
+                       class="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                        </svg>
                         Imprimir
-                     </a>
+                    </a>
                 </div>
 
                 <!-- Detalles de Muestras -->
@@ -85,8 +98,8 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-100">
                                     <tr>
+                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-600 uppercase">Código</th>
                                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-600 uppercase">Características</th>
-                                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-600 uppercase">Peso (kg)</th>
                                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-600 uppercase">Municipio</th>
                                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-600 uppercase">Lugar Específico</th>
                                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-600 uppercase">Tipo de Material</th>
@@ -95,8 +108,8 @@
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach ($boleta->muestras as $muestraIndex => $muestra)
                                         <tr class="{{ $muestraIndex % 2 === 0 ? 'bg-gray-50' : 'bg-white' }}">
+                                            <td class="px-4 py-2 whitespace-nowrap">{{ $muestra->codigo }}</td>
                                             <td class="px-4 py-2 whitespace-nowrap">{{ $muestra->caracteristicas_muestra ?? 'N/A' }}</td>
-                                            <td class="px-4 py-2 whitespace-nowrap">{{ $muestra->peso }}</td>
                                             <td class="px-4 py-2 whitespace-nowrap">{{ $muestra->municipio }}</td>
                                             <td class="px-4 py-2 whitespace-nowrap">{{ $muestra->lugar_especifico }}</td>
                                             <td class="px-4 py-2 whitespace-nowrap">{{ $muestra->tipo_material }}</td>

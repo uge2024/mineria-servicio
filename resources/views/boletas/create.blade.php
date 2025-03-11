@@ -42,7 +42,7 @@
             </div>
             <!-- Sector -->
             <div>
-                <label for="sector" class="block text-sm font-medium text-gray-700">Razon Social al Sector que Pertenece:</label>
+                <label for="sector" class="block text-sm font-medium text-gray-700">Razón Social al Sector que Pertenece:</label>
                 <input type="text" name="sector" id="sector" required value="{{ old('sector') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                 @error('sector')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -88,31 +88,38 @@
                     <!-- Características de la Muestra -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Características de la Muestra:</label>
-                        <textarea name="muestras[0][caracteristicas_muestra]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
-                    </div>
-                    <!-- Peso -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Peso (kg):</label>
-                        <input type="number" step="0.01" name="muestras[0][peso]" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        <textarea name="muestras[0][caracteristicas_muestra]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">{{ old('muestras.0.caracteristicas_muestra') }}</textarea>
+                        @error('muestras.0.caracteristicas_muestra')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                     <!-- Municipio -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Municipio:</label>
-                        <input type="text" name="muestras[0][municipio]" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        <input type="text" name="muestras[0][municipio]" required value="{{ old('muestras.0.municipio') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        @error('muestras.0.municipio')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                     <!-- Lugar Específico -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Lugar Específico:</label>
-                        <input type="text" name="muestras[0][lugar_especifico]" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        <input type="text" name="muestras[0][lugar_especifico]" required value="{{ old('muestras.0.lugar_especifico') }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        @error('muestras.0.lugar_especifico')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                     <!-- Tipo de Material -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Tipo de Material:</label>
                         <select name="muestras[0][tipo_material]" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="">Selecciona una opción</option>
-                            <option value="Brosa">Brosa</option>
-                            <option value="Fina">Fina</option>
+                            <option value="Brosa" {{ old('muestras.0.tipo_material') == 'Brosa' ? 'selected' : '' }}>Brosa</option>
+                            <option value="Fina" {{ old('muestras.0.tipo_material') == 'Fina' ? 'selected' : '' }}>Fina</option>
                         </select>
+                        @error('muestras.0.tipo_material')
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                     <!-- Botón para eliminar muestra -->
                     <button type="button" class="remove-muestra mt-2 py-1 px-2 bg-red-500 text-white rounded-md hover:bg-red-600">
@@ -123,7 +130,7 @@
 
             <!-- Botón para agregar nueva muestra -->
             <button type="button" id="add-muestra" class="py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:ring-2 focus:ring-green-500 mb-4">
-                Agregar Mas Muestras
+                Agregar Más Muestras
             </button>
 
             <!-- Botones de Navegación -->
@@ -157,10 +164,6 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700">Características de la Muestra:</label>
                 <textarea name="muestras[${muestraIndex}][caracteristicas_muestra]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Peso (kg):</label>
-                <input type="number" step="0.01" name="muestras[${muestraIndex}][peso]" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">Municipio:</label>

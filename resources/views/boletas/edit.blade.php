@@ -34,7 +34,7 @@
             </div>
             <!-- Sector -->
             <div>
-                <label for="sector" class="block text-sm font-medium text-gray-700">Razon Social al Sector que Pertenece:</label>
+                <label for="sector" class="block text-sm font-medium text-gray-700">Razón Social al Sector que Pertenece:</label>
                 <input type="text" name="sector" id="sector" required value="{{ old('sector', $boleta->sector) }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
             </div>
             <!-- Fecha de Solicitud -->
@@ -51,7 +51,7 @@
             </div>
             <!-- Número de Contrato -->
             <div>
-                <label for="numero_contrato" class="block text-sm font-medium text-gray-700">Número de Contacto:</label>
+                <label for="numero_contrato" class="block text-sm font-medium text-gray-700">Número de Contrato:</label>
                 <input type="text" name="numero_contrato" id="numero_contrato" required value="{{ old('numero_contrato', $boleta->numero_contrato) }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
             </div>
         </div>
@@ -64,15 +64,20 @@
                     <div class="border p-4 mb-4 rounded-md muestra-item">
                         <h3 class="text-md font-medium mb-2">Muestra {{ $index + 1 }}</h3>
                         <input type="hidden" name="muestras[{{ $index }}][id]" value="{{ $muestra->id }}">
+                        <!-- Código (solo lectura) -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Código:</label>
+                            <input 
+                                type="text" 
+                                value="{{ $muestra->codigo }}" 
+                                readonly 
+                                class="mt-1 block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm text-gray-700"
+                            >
+                        </div>
                         <!-- Características de la Muestra -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Características de la Muestra:</label>
                             <textarea name="muestras[{{ $index }}][caracteristicas_muestra]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">{{ old("muestras.$index.caracteristicas_muestra", $muestra->caracteristicas_muestra) }}</textarea>
-                        </div>
-                        <!-- Peso -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Peso (kg):</label>
-                            <input type="number" step="0.01" name="muestras[{{ $index }}][peso]" required value="{{ old("muestras.$index.peso", $muestra->peso) }}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                         </div>
                         <!-- Municipio -->
                         <div>
@@ -93,11 +98,16 @@
                             </select>
                         </div>
                         <!-- Botón para eliminar muestra -->
-                        <button type="button" class="remove-muestra mt-2 py-1 px-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+                        <button type="button" class="remove-muestra mt-2 py-1 px-2 bg-red-500 text-white rounded-md hover:bg-red-600" data-muestra-id="{{ $muestra->id }}">
                             Eliminar Muestra
                         </button>
                     </div>
                 @endforeach
+            </div>
+
+            <!-- Campo oculto para almacenar IDs de muestras eliminadas -->
+            <div id="muestras-eliminar-container">
+                <!-- Aquí se agregarán los inputs ocultos para las muestras eliminadas -->
             </div>
 
             <!-- Botón para agregar nueva muestra -->
@@ -138,10 +148,6 @@
                 <textarea name="muestras[${muestraIndex}][caracteristicas_muestra]" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"></textarea>
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700">Peso (kg):</label>
-                <input type="number" step="0.01" name="muestras[${muestraIndex}][peso]" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-            </div>
-            <div>
                 <label class="block text-sm font-medium text-gray-700">Municipio:</label>
                 <input type="text" name="muestras[${muestraIndex}][municipio]" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
             </div>
@@ -166,19 +172,29 @@
         container.appendChild(newMuestra);
     });
 
-    // Función para eliminar una muestra
+    // Función para eliminar una muestra y agregar su ID a la lista de eliminados
     document.addEventListener('click', function (event) {
         if (event.target && event.target.classList.contains('remove-muestra')) {
             const muestraItem = event.target.closest('.muestra-item');
+            const muestraId = event.target.getAttribute('data-muestra-id');
+
+            // Si la muestra tiene un ID (es existente), agregarlo a las muestras eliminadas
+            if (muestraId) {
+                const eliminarContainer = document.getElementById('muestras-eliminar-container');
+                const inputEliminar = document.createElement('input');
+                inputEliminar.type = 'hidden';
+                inputEliminar.name = 'muestras_eliminar[]';
+                inputEliminar.value = muestraId;
+                eliminarContainer.appendChild(inputEliminar);
+            }
+
+            // Eliminar la muestra del DOM
             muestraItem.remove();
 
             // Recalcular los índices de las muestras restantes
             const muestras = document.querySelectorAll('#muestras-container .muestra-item');
             muestras.forEach((item, index) => {
-                // Actualizar el título de la muestra
                 item.querySelector('h3').textContent = `Muestra ${index + 1}`;
-
-                // Actualizar los nombres de los campos
                 item.querySelectorAll('input, textarea, select').forEach(field => {
                     const name = field.getAttribute('name');
                     if (name) {

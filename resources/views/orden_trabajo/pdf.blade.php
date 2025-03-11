@@ -110,7 +110,7 @@
         </thead>
         <tbody>
             <tr>
-                <td><strong>Boleta:</strong></td>
+                <td><strong>Número de Solicitud:</strong></td>
                 <td>{{ $ordenTrabajo->boleta->numero_solicitud }}</td>
             </tr>
             <tr>
@@ -183,8 +183,8 @@
     <table class="samples-table">
         <thead>
             <tr>
+                <th>Codigo</th>
                 <th>Características</th>
-                <th>Peso (kg)</th>
                 <th>Municipio</th>
                 <th>Lugar Específico</th>
                 <th>Tipo de Material</th>
@@ -193,8 +193,8 @@
         <tbody>
             @foreach ($ordenTrabajo->boleta->muestras as $muestra)
                 <tr>
+                    <td>{{ $muestra->codigo }}</td>
                     <td>{{ $muestra->caracteristicas_muestra }}</td>
-                    <td>{{ $muestra->peso }}</td>
                     <td>{{ $muestra->municipio }}</td>
                     <td>{{ $muestra->lugar_especifico }}</td>
                     <td>{{ $muestra->tipo_material }}</td>

@@ -48,6 +48,8 @@
         <h1>GOBIERNO AUTÓNOMO DEPARTAMENTAL DE COCHABAMBA</h1>
         <h2>Secretaria Departamental de Minería, Hidrocarburos y Energías</h2>
         <h2>FORMULARIO DE:{{ $boleta->servicio->nombre }}</h2>
+        <h2>Número de Solicitud: {{ $boleta->numero_solicitud }}</h2>
+        
     </div>
 
     <div class="section">
@@ -73,8 +75,8 @@
             <thead>
                 <tr>
                     <th>N.º</th>
+                    <th>Codigo</th>
                     <th>Características de la Muestra</th>
-                    <th>Peso</th>
                     <th>Municipio</th>
                     <th>Lugar Específico</th>
                     <th>Tipo de Material</th>
@@ -84,8 +86,8 @@
                 @foreach ($boleta->muestras as $index => $muestra)
                 <tr>
                     <td>{{ $index + 1 }}</td>
+                    <td>{{ $muestra->codigo }}</td>
                     <td>{{ $muestra->caracteristicas_muestra ?? 'N/A' }}</td>
-                    <td>{{ $muestra->peso }}</td>
                     <td>{{ $muestra->municipio }}</td>
                     <td>{{ $muestra->lugar_especifico }}</td>
                     <td>{{ $muestra->tipo_material }}</td>
