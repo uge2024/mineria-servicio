@@ -53,7 +53,7 @@
                         <p>{{ $boleta->fecha_solicitud }}</p>
                     </div>
                     <div>
-                        <p class="font-semibold text-gray-700">Número de Contrato:</p>
+                        <p class="font-semibold text-gray-700">Número de Contacto:</p>
                         <p>{{ $boleta->numero_contrato }}</p>
                     </div>
                 </div>
