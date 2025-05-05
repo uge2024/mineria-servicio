@@ -29,7 +29,6 @@ class OrdenTrabajoController extends Controller
         $request->validate([
             'boleta_id' => 'required|exists:boletas,id',
         ]);
-    
         // Obtener la boleta
         $boleta = Boleta::findOrFail($request->boleta_id);
     

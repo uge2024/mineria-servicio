@@ -56,7 +56,7 @@
                                     {{ $orden->cantidad_muestras }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    ${{ number_format($orden->costo_total, 2) }}
+                                    Bs. {{ number_format($orden->costo_total, 2) }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 

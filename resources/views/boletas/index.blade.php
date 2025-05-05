@@ -26,7 +26,7 @@
             <div class="rounded-lg border-2 {{ $index % 2 === 0 ? 'border-blue-400' : 'border-green-400' }} p-4 mb-6 bg-white shadow-sm">
                 <!-- Número de Solicitud -->
                 <div class="mb-4">
-                    <p class="font-semibold text-gray-700">Número de Solicitud:</p>
+                    <p class="font-semibold text-gray-700">Número de Solicitud: </p>
                     <p class="text-xl font-bold text-gray-800">{{ $boleta->numero_solicitud }}</p>
                 </div>
 
