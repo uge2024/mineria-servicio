@@ -19,7 +19,9 @@
                 <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
                     <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
                         <div class="flex lg:justify-center lg:col-start-2">
-                            <img src="{{ asset('images/logo-cochabamba.png') }}" alt="Gobierno Autónomo Departamental de Cochabamba" class="h-16 w-auto">
+                            <img src="{{ asset('images/imagen1.png') }}" alt="Gobierno Autónomo Departamental de Cochabamba" class="h-20 w-auto">
+                            <h1 style="text-align: center">Gobierno Autónomo Departamental de Cochabamba</h1>
+                            <img src="{{ asset('images/imagen2.png') }}" alt="Gobierno Autónomo Departamental de Cochabamba" class="h-20 w-auto">
                         </div>
                         @if (Route::has('login'))
                             <nav class="-mx-3 flex flex-1 justify-end">
@@ -31,9 +33,9 @@
                                         Dashboard
                                     </a>
                                 @else
-                                <a href="{{ route('login') }}" class="mt-4 inline-flex rounded-md px-4 py-2 bg-[#FF2D20] text-white hover:bg-[#E0241B] focus:outline-none focus-visible:ring-[#FF2D20]">
-                                    Iniciar sesión
-                                </a>
+                                    <a href="{{ route('login') }}" class="mt-4 inline-flex rounded-md px-4 py-2 bg-[#FF2D20] text-white hover:bg-[#E0241B] focus:outline-none focus-visible:ring-[#FF2D20]">
+                                        Iniciar sesión
+                                    </a>
                                 @endauth
                             </nav>
                         @endif
@@ -66,14 +68,13 @@
                                     <p class="mt-4 text-sm/relaxed">
                                         Acceda a los servicios en línea ofrecidos por la Secretaría para la gestión de trámites relacionados con minería, hidrocarburos y energías, de manera rápida y segura.
                                     </p>
-                                    
                                 </div>
                             </div>
                         </div>
                     </main>
 
                     <footer class="py-16 text-center text-sm text-black dark:text-white/70">
-                        Gobierno Autónomo Departamental de Cochabamba &copy; {{ date('Y') }}
+                        Unidad de Gobierno Electronico © {{ date('Y') }}
                     </footer>
                 </div>
             </div>
