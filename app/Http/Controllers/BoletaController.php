@@ -133,6 +133,11 @@ class BoletaController extends Controller
      */
     public function edit(Boleta $boleta)
     {
+        // Verificar si la boleta tiene una orden de trabajo con estado "pagado"
+        if ($boleta->ordenTrabajo && $boleta->ordenTrabajo->estado_pago === 'pagado') {
+            return redirect()->route('boletas.index')
+                             ->with('error', 'No se puede editar esta boleta porque la orden de trabajo asociada ya ha sido pagada.');
+        }
         $servicios = \App\Models\Servicio::all(); // Obtener servicios disponibles
         return view('boletas.edit', compact('boleta', 'servicios'));
     }
@@ -142,6 +147,13 @@ class BoletaController extends Controller
      */
     public function update(Request $request, Boleta $boleta)
 {
+    
+    
+    // Verificar si la boleta tiene una orden de trabajo con estado "pagado"
+    if ($boleta->ordenTrabajo && $boleta->ordenTrabajo->estado_pago === 'pagado') {
+        return redirect()->route('boletas.index')
+                         ->with('error', 'No se puede actualizar esta boleta porque la orden de trabajo asociada ya ha sido pagada.');
+    }
     // Validar los datos generales de la boleta
     $validated = $request->validate([
         'servicio_id' => 'required|exists:servicios,id',
@@ -225,9 +237,15 @@ class BoletaController extends Controller
      */
     public function destroy(Boleta $boleta)
     {
+        
+        // Verificar si la boleta tiene una orden de trabajo con estado "pagado"
+        if ($boleta->ordenTrabajo && $boleta->ordenTrabajo->estado_pago === 'pagado') {
+            return redirect()->route('boletas.index')
+                             ->with('error', 'No se puede eliminar esta boleta porque la orden de trabajo asociada ya ha sido pagada.');
+        }
         $boleta->muestras()->delete(); // Eliminar todas las muestras asociadas
-    $boleta->delete(); // Eliminar la boleta
-    return redirect()->route('boletas.index')->with('success', 'Boleta eliminada exitosamente.');
+        $boleta->delete(); // Eliminar la boleta
+        return redirect()->route('boletas.index')->with('success', 'Boleta eliminada exitosamente.');
     
     }
 

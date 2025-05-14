@@ -60,26 +60,35 @@
 
                 <!-- Acciones -->
                 <div class="flex flex-wrap gap-3 mb-4">
-                    <a href="{{ route('boletas.edit', $boleta->id) }}" 
-                       class="inline-flex items-center bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 transition ease-in-out duration-150">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                        </svg>
-                        Editar
-                    </a>
-                    <form action="{{ route('boletas.destroy', $boleta->id) }}" method="POST" 
-                          class="inline-block" 
-                          onsubmit="return confirm('¿Está seguro de eliminar esta boleta?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" 
-                                class="inline-flex items-center bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    <!-- Botón Editar (oculto si está pagado) -->
+                    @if(!$boleta->ordenTrabajo || $boleta->ordenTrabajo->estado_pago !== 'pagado')
+                        <a href="{{ route('boletas.edit', $boleta->id) }}" 
+                           class="inline-flex items-center bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 transition ease-in-out duration-150">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4M9 7h6"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                             </svg>
-                            Eliminar
-                        </button>
-                    </form>
+                            Editar
+                        </a>
+                    @endif
+
+
+                    <!-- Botón Eliminar (oculto si está pagado) -->
+                    @if(!$boleta->ordenTrabajo || $boleta->ordenTrabajo->estado_pago !== 'pagado')
+                        <form action="{{ route('boletas.destroy', $boleta->id) }}" method="POST" 
+                              class="inline-block" 
+                              onsubmit="return confirm('¿Está seguro de eliminar esta boleta?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" 
+                                    class="inline-flex items-center bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4M9 7h6"></path>
+                                </svg>
+                                Eliminar
+                            </button>
+                        </form>
+                    @endif
+                    
                     <a href="{{ route('boletas.pdf', $boleta->id) }}" 
                        target="_blank" 
                        class="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition ease-in-out duration-150">

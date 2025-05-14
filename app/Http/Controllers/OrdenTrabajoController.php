@@ -94,6 +94,12 @@ class OrdenTrabajoController extends Controller
         // Buscar la orden de trabajo por ID
         $ordenTrabajo = OrdenTrabajo::findOrFail($id);
 
+        // Verificar si ya está pagado
+        if ($ordenTrabajo->estado_pago === 'pagado') {
+            return redirect()->route('orden_trabajo.index')
+                            ->with('error', 'Esta orden de trabajo ya ha sido marcada como pagada.');
+        }
+
         // Cambiar el estado de pago a "pagado"
         $ordenTrabajo->estado_pago = 'pagado';
         $ordenTrabajo->save();
