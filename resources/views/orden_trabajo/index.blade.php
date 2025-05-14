@@ -5,7 +5,7 @@
     <div class="py-8">
         <!-- Título y Botón Agregar -->
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Órdenes de Trabajo</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Órdenes de Trabajos</h1>
             <a href="{{ route('orden_trabajo.create') }}" 
                class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out">
                 + Agregar Orden

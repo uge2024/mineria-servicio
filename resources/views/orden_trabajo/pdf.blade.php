@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orden de Trabajo #{{ $ordenTrabajo->id }}</title>
+    <title>Orden de Trabajos #{{ $ordenTrabajo->id }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -99,7 +99,7 @@
     </div>
 
     <!-- Título principal -->
-    <h1>Orden de Trabajo #{{ $ordenTrabajo->id }}</h1>
+    <h1>Orden de Trabajo #{{ $ordenTrabajo->numero_orden }}</h1>
 
     <!-- Información de la boleta en tabla -->
     <table class="info-table">

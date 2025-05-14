@@ -29,29 +29,52 @@ class OrdenTrabajoController extends Controller
         $request->validate([
             'boleta_id' => 'required|exists:boletas,id',
         ]);
-        // Obtener la boleta
-        $boleta = Boleta::findOrFail($request->boleta_id);
-    
-        // Obtener el servicio asociado a la boleta
-        $servicio = $boleta->servicio;
-    
-        // Contar la cantidad de muestras asociadas a la boleta
-        $cantidadMuestras = $boleta->muestras->count();
-    
-        // Calcular el costo total (cantidad de muestras * precio del servicio)
-        $costoTotal = $cantidadMuestras * $servicio->precio;
-    
-        // Crear la orden de trabajo
-        OrdenTrabajo::create([
-            'boleta_id' => $boleta->id,
-            'servicio_id' => $servicio->id,
-            'cantidad_muestras' => $cantidadMuestras,
-            'costo_total' => $costoTotal,
-            'estado_pago' => 'pendiente', // Estado inicial
-        ]);
-    
-        return redirect()->route('orden_trabajo.index')->with('success', 'Orden de trabajo generada correctamente.');
+        // Obtener la boleta asociada
+    $boleta = Boleta::findOrFail($request->boleta_id);
+    $servicio = $boleta->servicio;
+    $cantidadMuestras = $boleta->muestras->count();
+    $costoTotal = $cantidadMuestras * $servicio->precio;
+
+    // Extraer el año de la fecha de solicitud (gestión) de la boleta
+    $gestion = \Carbon\Carbon::parse($boleta->fecha_solicitud)->format('Y');
+
+    // Obtener la última orden de trabajo de la misma gestión
+    $lastOrden = OrdenTrabajo::whereHas('boleta', function ($query) use ($gestion) {
+        $query->whereYear('fecha_solicitud', $gestion);
+    })->orderBy('numero_orden', 'desc')->first();
+
+    // Generar el número de orden
+    if ($lastOrden) {
+        // Extraer el número secuencial usando una expresión regular más precisa
+        preg_match('/(\d{3})-\d{4}$/', $lastOrden->numero_orden, $matches);
+        $ultimoNumero = $matches ? intval($matches[1]) : 0; // Capturar solo el número secuencial
+        $nuevoNumero = $ultimoNumero + 1;
+    } else {
+        // Si no hay órdenes en esta gestión, empezar desde 1
+        $nuevoNumero = 1;
     }
+
+    // Formatear el número de orden (ejemplo: 001-2025)
+    $numeroOrden = str_pad($nuevoNumero, 3, '0', STR_PAD_LEFT) . "-{$gestion}";
+
+    // Verificar que el número de orden no exista ya
+    while (OrdenTrabajo::where('numero_orden', $numeroOrden)->exists()) {
+        $nuevoNumero++;
+        $numeroOrden = str_pad($nuevoNumero, 3, '0', STR_PAD_LEFT) . "-{$gestion}";
+    }
+
+    // Crear la orden de trabajo
+    OrdenTrabajo::create([
+        'boleta_id' => $boleta->id,
+        'servicio_id' => $servicio->id,
+        'cantidad_muestras' => $cantidadMuestras,
+        'costo_total' => $costoTotal,
+        'estado_pago' => 'pendiente',
+        'numero_orden' => $numeroOrden,
+    ]);
+
+    return redirect()->route('orden_trabajo.index')->with('success', 'Orden de trabajo generada correctamente.');
+}
 
     public function generarPDF($id)
     {

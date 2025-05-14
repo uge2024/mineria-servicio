@@ -19,6 +19,7 @@ class OrdenTrabajo extends Model
         'cantidad_muestras',
         'costo_total',
         'estado_pago',
+        'numero_orden'
         ];
 
 
