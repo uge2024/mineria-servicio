@@ -108,5 +108,36 @@ class OrdenTrabajoController extends Controller
         return redirect()->route('orden_trabajo.index')->with('success', 'Estado de pago actualizado correctamente.');
     }
     
+    public function reporte(Request $request)
+    {
+        // Definir fechas predeterminadas si no se proporcionan
+        $fechaInicio = $request->input('fecha_inicio') ?? now()->toDateString();
+        $fechaFin = $request->input('fecha_fin') ?? now()->toDateString();
+
+        // Validar las fechas
+        $request->validate([
+            'fecha_inicio' => 'nullable|date|before_or_equal:fecha_fin',
+            'fecha_fin' => 'nullable|date|after_or_equal:fecha_inicio',
+        ]);
+
+        // Buscar órdenes pagadas entre las fechas
+        $ordenesPagadas = OrdenTrabajo::with(['boleta', 'servicio'])
+            ->where('estado_pago', 'pagado')
+            ->whereBetween('updated_at', [$fechaInicio . ' 00:00:00', $fechaFin . ' 23:59:59'])
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        // Calcular el total cobrado
+        $totalCobrado = $ordenesPagadas->sum('costo_total');
+
+        // Si se solicita exportar a PDF
+        if ($request->has('export_pdf')) {
+            $pdf = Pdf::loadView('orden_trabajo.reporte_pdf', compact('ordenesPagadas', 'totalCobrado', 'fechaInicio', 'fechaFin'));
+            return $pdf->stream('reporte_ordenes_pagadas_' . $fechaInicio . '_a_' . $fechaFin . '.pdf');
+        }
+
+        // Pasar los datos a la vista
+        return view('orden_trabajo.reporte', compact('ordenesPagadas', 'totalCobrado', 'fechaInicio', 'fechaFin'));
+    }
 
 }

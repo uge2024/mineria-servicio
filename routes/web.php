@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\BoletaController;
 use App\Http\Controllers\OrdenTrabajoController;
+use App\Http\Controllers\DashboardController;
 
 
  
@@ -41,6 +42,9 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/orden-trabajo/{id}/pdf', [OrdenTrabajoController::class, 'generarPDF'])->name('orden_trabajo.pdf');
+    Route::get('/orden-trabajo/reporte', [OrdenTrabajoController::class, 'reporte'])->name('orden_trabajo.reporte');
+    Route::get('/ordenes-trabajo/reporte/exportar-pdf', [OrdenTrabajoController::class, 'exportarReportePDF'])->name('orden_trabajo.exportar_pdf');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     
 });

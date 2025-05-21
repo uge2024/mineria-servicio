@@ -31,6 +31,10 @@
                     <x-nav-link :href="route('orden_trabajo.index')" :active="request()->routeIs('orden_trabajo.index')">
                         {{ __('Ordenes') }}
                     </x-nav-link>
+                    <!-- Reportes-->
+                    <x-nav-link :href="route('orden_trabajo.reporte')" :active="request()->routeIs('orden_trabajo.reporte')">
+                        {{ __('Reportes') }}
+                    </x-nav-link>
                 </div>
             </div>
 
