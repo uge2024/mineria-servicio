@@ -127,7 +127,7 @@
             </tr>
             <tr>
                 <td><strong>Fecha de Solicitud:</strong></td>
-                <td>{{ $ordenTrabajo->boleta->fecha_solicitud }}</td>
+                <td>{{ \Carbon\Carbon::parse($ordenTrabajo->boleta->fecha_solicitud)->format('d-m-Y') }}</td>
             </tr>
             <tr>
                 <td><strong>Número de Contacto:</strong></td>

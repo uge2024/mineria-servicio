@@ -64,7 +64,7 @@
                 <td><strong>N° de Contacto:</strong> {{ $boleta->numero_contrato }}</td>
             </tr>
             <tr>
-                <td colspan="2"><strong>Fecha de Solicitud:</strong> {{ $boleta->fecha_solicitud }}</td>
+                <td colspan="2"><strong>Fecha de Solicitud:</strong> {{ \Carbon\Carbon::parse($boleta->fecha_solicitud)->format('d-m-Y') }}</td>
             </tr>
         </table>
     </div>
