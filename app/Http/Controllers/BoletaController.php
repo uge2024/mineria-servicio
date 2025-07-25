@@ -7,6 +7,7 @@ use App\Models\Boleta;
 use App\Models\Servicio;
 use App\Models\Muestra;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Http\Controllers\OrdenTrabajoController;
 
 class BoletaController extends Controller
 {
@@ -228,6 +229,9 @@ class BoletaController extends Controller
         Muestra::whereIn('id', $muestrasEliminar)->where('boleta_id', $boleta->id)->delete();
     }
 
+    // *** NUEVA LÍNEA: Actualizar la orden de trabajo asociada ***
+    OrdenTrabajoController::actualizarOrdenPorBoleta($boleta->id);
+
     // Redirigir con mensaje de éxito
     return redirect()->route('boletas.index')->with('success', 'Boleta actualizada exitosamente.');
 }
@@ -243,6 +247,12 @@ class BoletaController extends Controller
             return redirect()->route('boletas.index')
                              ->with('error', 'No se puede eliminar esta boleta porque la orden de trabajo asociada ya ha sido pagada.');
         }
+
+        // Eliminar la orden de trabajo asociada si existe (cascada manual)
+        if ($boleta->ordenTrabajo) {
+            $boleta->ordenTrabajo->delete();
+        }
+        // Eliminar las muestras asociadas a la boleta
         $boleta->muestras()->delete(); // Eliminar todas las muestras asociadas
         $boleta->delete(); // Eliminar la boleta
         return redirect()->route('boletas.index')->with('success', 'Boleta eliminada exitosamente.');
